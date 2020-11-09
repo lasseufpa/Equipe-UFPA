@@ -9,6 +9,11 @@ First, you need to create a ROS workspace:
 $ mkdir -p ~/lasse_ws/src
 $ cd ~/lasse_ws/
 $ catkin_make
+$ echo 'source ~/lasse_ws/devel/setup.bash' >> ~/.bashrc 
+
+# In the ~/.bashrc file, edit the following line to
+# export ROS_WORKSPACES="~/mrs_workspace ~/workspace"
+# export ROS_WORKSPACES="~/mrs_workspace ~/workspace ~/lasse_ws"
 ```
 
 Then use the following commands to clone our ROS packages and repositories into the workspace:
