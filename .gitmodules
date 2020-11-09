@@ -37,12 +37,3 @@
 [submodule "phase_3_python_and_yolo_pipeline"]
 	path = phase_3_python_and_yolo_pipeline
 	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase_3_python_and_yolo_pipeline.git
-[submodule "vision_opencv"]
-	path = vision_opencv
-	url = https://github.com/ros-perception/vision_opencv.git
-[submodule "gazebo_ros_link_attacher"]
-	path = gazebo_ros_link_attacher
-	url = https://github.com/pal-robotics/gazebo_ros_link_attacher
-[submodule "hector_slam"]
-	path = hector_slam
-	url = https://github.com/ctu-mrs/hector_slam.git

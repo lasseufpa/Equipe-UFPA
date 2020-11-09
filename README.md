@@ -1,18 +1,17 @@
 # Petrobras-Challenge-CBR
 Codes of LASSE team for "Petrobras Challenge of Robotics", which is part of the “CBR".
 
+# Dependecies
+
+- Hector SLAM (MRS Fork)
+- OpenCV
+- Pyzbar
+- vision_opencv
+- gazebo_ros_link_attacher
+
 # Installation
 
-First, you need to create a ROS workspace:
-
-```bash
-$ mkdir -p ~/lasse_ws/src
-$ cd ~/lasse_ws/
-$ catkin init
-$ source ~/.bashrc
-```
-
-Then use the following commands to clone our ROS packages and repositories into the workspace:
+Use the following commands to clone our ROS packages and repositories into the workspace:
 
 PS: You will be asked credentials for gitlab, they are:
 
@@ -22,24 +21,19 @@ password: ZNQCtuJ5wrpFN6
 ```
 
 ```bash
-$ cd ~/lasse_ws/src
+$ cd ~/workspace
 $ git config --global credential.helper store
 $ git clone --recurse-submodules https://github.com/lasseufpa/Equipe-UFPA.git # You will be asked credentials here
 ```
 
 After cloning do the following extra steps:
 
-```bash
-$ cd ~/lasse_ws/src/Equipe-UFPA/vision_opencv
-$ git checkout melodic
-```
-
 Now, build the workspace with:
 
 ```bash
-$ cd ~/lasse_ws
+$ cd ~/workspace
 $ catkin build
-$ echo 'source ~/lasse_ws/devel/setup.bash' >> ~/.bashrc 
+$ source ~/workspace/devel/setup.bash
 ```
 
 # Update
