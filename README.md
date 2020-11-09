@@ -9,6 +9,7 @@ First, you need to create a ROS workspace:
 $ mkdir -p ~/lasse_ws/src
 $ cd ~/lasse_ws/
 $ catkin_make
+$ source ~/lasse_ws/devel/setup.bash
 $ echo 'source ~/lasse_ws/devel/setup.bash' >> ~/.bashrc 
 
 # In the ~/.bashrc file, edit the following line to
