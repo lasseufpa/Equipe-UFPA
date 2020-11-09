@@ -35,6 +35,10 @@ $ git clone --recurse-submodules https://github.com/lasseufpa/Equipe-UFPA.git # 
 After cloning do the following extra steps:
 
 ```bash
+$ cd Equipe-UFPA/
+$ mv hector_slam ~/workspace/src
+$ cd ~/workspace/src
+$ catkin build
 $ cd ~/lasse_ws/src/Equipe-UFPA/vision_opencv
 $ git checkout melodic
 ```
