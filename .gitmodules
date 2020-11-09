@@ -40,9 +40,9 @@
 [submodule "vision_opencv"]
 	path = vision_opencv
 	url = https://github.com/ros-perception/vision_opencv.git
-[submodule "hector_slam"]
-	path = hector_slam
-	url = https://github.com/tu-darmstadt-ros-pkg/hector_slam.git
 [submodule "gazebo_ros_link_attacher"]
 	path = gazebo_ros_link_attacher
 	url = https://github.com/pal-robotics/gazebo_ros_link_attacher
+[submodule "hector_slam"]
+	path = hector_slam
+	url = https://github.com/ctu-mrs/hector_slam.git
