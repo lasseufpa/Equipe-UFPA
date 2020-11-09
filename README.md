@@ -39,7 +39,7 @@ After cloning do the following extra steps:
 
 ```bash
 $ cd ~/lasse_ws/src/vision_opencv
-$ git checkout kinetic
+$ git checkout melodic
 ```
 
 Now, build the workspace with:
