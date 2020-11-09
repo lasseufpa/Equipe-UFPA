@@ -20,11 +20,18 @@ $ cd ~/lasse_ws
 $ catkin_make
 ```
 
-To update submodules use:
+To update submodules use (optional, can be done later):
 
 ```bash
 $ cd ~/lasse_ws/src
 $ git submodule update --remote
 $ cd ~/lasse_ws
 $ catkin_make
+```
+
+Install external dependecies:
+
+```bash
+$ sudo apt install python-pip python-opencv
+$ sudo pip install numpy
 ```
