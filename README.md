@@ -8,13 +8,8 @@ First, you need to create a ROS workspace:
 ```bash
 $ mkdir -p ~/lasse_ws/src
 $ cd ~/lasse_ws/
-$ catkin_make
-$ source ~/lasse_ws/devel/setup.bash
-$ echo 'source ~/lasse_ws/devel/setup.bash' >> ~/.bashrc 
-
-# In the ~/.bashrc file, edit the following line to
-# export ROS_WORKSPACES="~/mrs_workspace ~/workspace"
-# export ROS_WORKSPACES="~/mrs_workspace ~/workspace ~/lasse_ws"
+$ catkin init
+$ source ~/.bashrc
 ```
 
 Then use the following commands to clone our ROS packages and repositories into the workspace:
@@ -35,10 +30,6 @@ $ git clone --recurse-submodules https://github.com/lasseufpa/Equipe-UFPA.git # 
 After cloning do the following extra steps:
 
 ```bash
-$ cd Equipe-UFPA/
-$ mv hector_slam ~/workspace/src
-$ cd ~/workspace/src
-$ catkin build
 $ cd ~/lasse_ws/src/Equipe-UFPA/vision_opencv
 $ git checkout melodic
 ```
@@ -47,7 +38,8 @@ Now, build the workspace with:
 
 ```bash
 $ cd ~/lasse_ws
-$ catkin_make
+$ catkin build
+$ echo 'source ~/lasse_ws/devel/setup.bash' >> ~/.bashrc 
 ```
 
 # Update
