@@ -35,7 +35,7 @@ $ git clone --recurse-submodules https://github.com/lasseufpa/Equipe-UFPA.git # 
 After cloning do the following extra steps:
 
 ```bash
-$ cd ~/lasse_ws/src/vision_opencv
+$ cd ~/lasse_ws/src/Equipe-UFPA/vision_opencv
 $ git checkout melodic
 ```
 
