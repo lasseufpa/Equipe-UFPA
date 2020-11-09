@@ -34,6 +34,7 @@ Now, build the workspace with:
 $ cd ~/workspace
 $ catkin build
 $ source ~/workspace/devel/setup.bash
+$ echo 'source ~/lasse_ws/devel/setup.bash' >> ~/.bashrc 
 ```
 
 ## Update
