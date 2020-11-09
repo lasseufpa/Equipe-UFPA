@@ -36,7 +36,7 @@ $ catkin build
 $ source ~/workspace/devel/setup.bash
 ```
 
-# Update
+## Update
 
 To update submodules use (optional, can be done later):
 
@@ -48,7 +48,7 @@ $ cd ~/lasse_ws
 $ catkin_make
 ```
 
-# External dependecies:
+## External dependecies:
 
 ```bash
 $ sudo apt install python-pip python-opencv
