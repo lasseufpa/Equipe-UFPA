@@ -46,6 +46,3 @@
 [submodule "gazebo_ros_link_attacher"]
 	path = gazebo_ros_link_attacher
 	url = https://github.com/pal-robotics/gazebo_ros_link_attacher
-[submodule "darknet"]
-	path = darknet
-	url = https://github.com/AlexeyAB/darknet.git
