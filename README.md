@@ -50,8 +50,9 @@ $ catkin_make
 To update submodules use (optional, can be done later):
 
 ```bash
-$ cd ~/lasse_ws/src
-$ git submodule update --remote
+$ cd ~/lasse_ws/src/Equipe-UFPA/<submodule>
+$ git fetch
+$ git merge
 $ cd ~/lasse_ws
 $ catkin_make
 ```
