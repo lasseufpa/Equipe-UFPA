@@ -1,0 +1,39 @@
+[submodule "phase0_base_centralize"]
+	path = phase0_base_centralize
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase0_base_centralize.git
+[submodule "phase0_control"]
+	path = phase0_control
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase0_control.git
+[submodule "phase0_drone_camera"]
+	path = phase0_drone_camera
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase0_drone_camera.git
+[submodule "phase0_petrobras_challenge"]
+	path = phase0_petrobras_challenge
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase0_petrobras_challenge.git
+[submodule "phase1_explore"]
+	path = phase1_explore
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase1_explore.git
+[submodule "phase1_general"]
+	path = phase1_general
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase1_general.git
+[submodule "phase1_panoramic"]
+	path = phase1_panoramic
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase1_panoramic.git
+[submodule "phase2_general"]
+	path = phase2_general
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase2_general.git
+[submodule "phase3-display-digits"]
+	path = phase3-display-digits
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase3-display-digits.git
+[submodule "phase3_general"]
+	path = phase3_general
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase3_general.git
+[submodule "phase3_ssd_digits_c"]
+	path = phase3_ssd_digits_c
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase3_ssd_digits_c.git
+[submodule "phase4_general"]
+	path = phase4_general
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase4_general.git
+[submodule "phase_3_python_and_yolo_pipeline"]
+	path = phase_3_python_and_yolo_pipeline
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase_3_python_and_yolo_pipeline.git
