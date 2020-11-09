@@ -50,6 +50,7 @@ $ cd ~/lasse_ws
 $ catkin_make
 ```
 
+# Update
 
 To update submodules use (optional, can be done later):
 
