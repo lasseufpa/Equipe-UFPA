@@ -22,8 +22,8 @@ Then use the following commands to clone our ROS packages and repositories into 
 PS: You will be asked credentials for gitlab, they are:
 
 ```bash
-username: ****
-password: ****
+username: petrobraschallenge
+password: ZNQCtuJ5wrpFN6
 ```
 
 ```bash
