@@ -62,7 +62,7 @@ $ cd ~/lasse_ws
 $ catkin_make
 ```
 
-Install external dependecies:
+# External dependecies:
 
 ```bash
 $ sudo apt install python-pip python-opencv
