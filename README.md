@@ -54,6 +54,12 @@ $ cd ~/lasse_ws
 $ catkin_make
 ```
 
+Or, if you want to update all submodules (it will use the master branch, be careful)
+
+```bash
+git submodule update --remote
+```
+
 # External dependecies:
 
 ```bash
