@@ -63,5 +63,6 @@ Install external dependecies:
 
 ```bash
 $ sudo apt install python-pip python-opencv
-$ sudo pip install numpy
+$ sudo -H pip install numpy
+$ sudo -H pip install pyzbar
 ```
