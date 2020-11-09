@@ -4,7 +4,7 @@ Codes of LASSE team for "Petrobras Challenge of Robotics", which is part of the 
 # Dependencies
 
 - Hector SLAM (MRS Fork)
-- OpenCV
+- OpenCV (probably not needed)
 - Pyzbar
 - vision_opencv
 - gazebo_ros_link_attacher
@@ -46,6 +46,7 @@ $ git fetch
 $ git merge
 $ cd ~/lasse_ws
 $ catkin_make
+$ git push
 ```
 
 ## External dependecies:
