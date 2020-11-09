@@ -28,11 +28,8 @@ password: ZNQCtuJ5wrpFN6
 
 ```bash
 $ cd ~/lasse_ws/src
-$ mv CMakeLists.txt ../
 $ git config --global credential.helper store
-$ git clone --recurse-submodules https://github.com/lasseufpa/Petrobras-Challenge-CBR . # You will be asked credentials here
-$ cd ~/lasse_ws
-$ mv CMakeLists.txt ./src
+$ git clone --recurse-submodules https://github.com/lasseufpa/Equipe-UFPA.git # You will be asked credentials here
 ```
 
 After cloning do the following extra steps:
