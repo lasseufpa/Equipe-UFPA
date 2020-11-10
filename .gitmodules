@@ -37,3 +37,6 @@
 [submodule "phase1_base_centralize"]
 	path = phase1_base_centralize
 	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase1_base_centralize.git
+[submodule "phase3_general"]
+	path = phase3_general
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase3_general.git
