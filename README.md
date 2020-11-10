@@ -71,11 +71,10 @@ sudo apt install nvidia-driver-450
 ## Cuda:
 
 ```
-
-    sudo dpkg -i cuda-repo-ubuntu1804_10.1.105-1_amd64.deb`
-    sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub`
-    sudo apt-get update`
-    sudo apt-get install cuda`
+sudo dpkg -i cuda-repo-ubuntu1804_10.1.105-1_amd64.deb`
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub`
+sudo apt-get update`
+sudo apt-get install cuda`
 ```
 
 Ou: https://developer.nvidia.com/cuda-10.1-download-archive-base?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1804&target_type=runfilelocal
@@ -89,6 +88,7 @@ rosrun phase2_general phase2_script.py
 -----
 
 rosrun phase1_base_centralize node
+
 rosrun phase1_general phase1.py --maps <path>/Equipe-UFPA/phase1_explore/data/
 
 
