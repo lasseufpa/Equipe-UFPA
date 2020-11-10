@@ -16,7 +16,7 @@ Codes of LASSE team for "Petrobras Challenge of Robotics", which is part of the 
 
 Use the following commands to clone our ROS packages and repositories into the workspace:
 
-PS: You will be asked credentials for *gitlab*, they are:
+PS: You will be asked credentials for **gitlab**, they are:
 
 ```bash
 username: petrobraschallenge
