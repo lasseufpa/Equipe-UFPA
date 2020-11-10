@@ -8,6 +8,9 @@ Codes of LASSE team for "Petrobras Challenge of Robotics", which is part of the 
 - Pyzbar
 - vision_opencv
 - gazebo_ros_link_attacher
+- torch
+- torchvision
+- scikit-build
 
 # Installation
 
@@ -51,4 +54,7 @@ $ git submodule update --remote
 $ sudo apt install python-pip python-opencv
 $ sudo -H pip install numpy
 $ sudo -H pip install pyzbar
+$ sudo -H pip install torch
+$ sudo -H pip install torchvision
+$ sudo -H pip install scikit-build
 ```
