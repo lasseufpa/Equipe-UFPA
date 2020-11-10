@@ -39,22 +39,10 @@ $ echo 'source ~/workspace/devel/setup.bash' >> ~/.bashrc
 
 ## Update
 
-To update submodules use (optional, can be done later):
-
-```bash
-$ cd ~/lasse_ws/src/Equipe-UFPA/<submodule>
-$ git fetch
-$ git merge
-$ cd ~/lasse_ws
-$ catkin_make
-$ git push
-```
-
-Or, if you want to update all submodules (it will use the master branch, be careful)
+To update all submodules (it will use the master branch, be careful)
 
 ```bash
 $ git submodule update --remote
-$ git push
 ```
 
 ## External dependecies:
