@@ -37,3 +37,6 @@
 [submodule "phase_3_python_and_yolo_pipeline"]
 	path = phase_3_python_and_yolo_pipeline
 	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase_3_python_and_yolo_pipeline.git
+[submodule "phase1_base_centralize"]
+	path = phase1_base_centralize
+	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase1_base_centralize.git
