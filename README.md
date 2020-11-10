@@ -21,7 +21,7 @@ password: ZNQCtuJ5wrpFN6
 ```
 
 ```bash
-$ cd ~/workspace
+$ cd ~/workspace/src
 $ git config --global credential.helper store
 $ git clone --recurse-submodules https://github.com/lasseufpa/Equipe-UFPA.git # You will be asked credentials here
 ```
