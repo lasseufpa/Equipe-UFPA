@@ -25,9 +25,6 @@
 [submodule "phase3-display-digits"]
 	path = phase3-display-digits
 	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase3-display-digits.git
-[submodule "phase3_general"]
-	path = phase3_general
-	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase3_general.git
 [submodule "phase3_ssd_digits_c"]
 	path = phase3_ssd_digits_c
 	url = https://gitlab.lasse.ufpa.br/2020-petrobras-challenge/phase3_ssd_digits_c.git
