@@ -3,50 +3,14 @@ Codes of LASSE team for "Petrobras Challenge of Robotics", which is part of the 
 
 # Dependencies
 
-- Hector SLAM (MRS Fork)
-- OpenCV (probably not needed)
+- OpenCV 
 - Pyzbar
 - vision_opencv
-- gazebo_ros_link_attacher
 - torch
 - torchvision
 - scikit-build
 
 # Installation
-
-Use the following commands to clone our ROS packages and repositories into the workspace:
-
-PS: You will be asked credentials for **gitlab**, they are:
-
-```bash
-username: petrobraschallenge
-password: ZNQCtuJ5wrpFN6
-```
-
-```bash
-$ cd ~/workspace/src
-$ git config --global credential.helper store
-$ git clone --recurse-submodules https://github.com/lasseufpa/Equipe-UFPA.git # You will be asked credentials here
-```
-
-After cloning do the following extra steps:
-
-Now, build the workspace with:
-
-```bash
-$ cd ~/workspace
-$ catkin build
-$ source ~/workspace/devel/setup.bash
-$ echo 'source ~/workspace/devel/setup.bash' >> ~/.bashrc 
-```
-
-## Update
-
-To update all submodules (it will use the master branch, be careful)
-
-```bash
-$ git submodule update --remote
-```
 
 ## External dependecies:
 
@@ -81,14 +45,13 @@ Ou: https://developer.nvidia.com/cuda-10.1-download-archive-base?target_os=Linux
 
 # Testing phases 1 and 2:
 
-rosrun phase1_panoramic main.py
+rosrun phase0_base_centralize node
+
+rosrun phase1_panoramic phase1_land.py
 
 rosrun phase2_general phase2_script.py
 
 -----
 
-rosrun phase1_base_centralize node
-
-rosrun phase1_general phase1.py --maps <path>/Equipe-UFPA/phase1_explore/data/
 
 
