@@ -1,0 +1,321 @@
+'''
+Here we try to find the display and rotate it.
+
+Oct. 31 - 2020 - AK: I will check how to use this script again
+'''
+
+from data_aug.data_aug import *
+from data_aug.bbox_util import *
+import cv2
+import pickle as pkl
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+from copy import deepcopy
+import random
+from util_digits import *
+from rotate_display.util_interpret_digits import *
+
+
+#initialize
+template_file = './rotate_display/template_1.png' #template_1.png is the largest
+percent_template = cv2.imread(template_file,0) #keep it in memory to speedup
+if percent_template is None:
+    raise Exception('Provide the correct path to file template_1.png. This one is wrong:' + template_file)
+
+#Define key parameters
+num_epochs = 8 #number of runs over all digits. There are 3900 digits (combinations of digits), so if you choose 2, you end up with 2*3900 output images
+should_show_images = False #use True to plot of False to run faster
+should_add_noise = False #use to add noise
+
+#define resolutions for:
+num_pixels_digits = 209 #a) images of digits, e.g. 209 for 209 x 209 images - DO NOT CHANGE IT
+num_pixels_base = 1900 #b) images of the base, e.g. 1900 for 1900 x 1900 images
+#c) final (output) images, e.g. 680 x 480 images:
+#num_pixels_final_x = 680 #width
+num_pixels_final_x = 752 #width
+num_pixels_final_y = 480 #height
+
+#These are the important digits for training the MNIST DNNs
+num_pixels_output_image = 290 #this image will not be used, has all display
+num_pixels_each_digit = 154 #this image is the input image to the NNs
+
+random_center_shift = 80 #number of pixels the center of the image will be shifted, from - to +
+
+#1) file with image of the base (image with a + in center). It needs to match num_pixels_base defined before
+img_base_original = cv2.imread("./source_base_images/bases_1900x1900.png")[:, :, ::-1] #OpenCV uses BGR channels
+#img_overlay = img_base_original
+#img_shape = img_overlay.shape
+
+#2) file with all possible display (digit) combinations
+#path = os.getcwd()
+#path = "D:/ak/Projects/Petrobras_Desafio/labels"
+#path = "/mnt/d/ak/Projects/Petrobras_Desafio/labels"
+path = "./source_digits_images/small_images"
+all_digit_files_list = get_files(path, "png")
+#print(all_digit_files_list)
+
+#3) output folder that will contain the digits on top of the base, with data augmentation
+output_folder = './digitsJ_train/' #'./new_digits_yolo/' #end it with /
+os.makedirs(output_folder, exist_ok=True)
+output_folder_digits = output_folder + 'digits'
+#os.makedirs(output_folder_digits, exist_ok=True)
+os.makedirs(output_folder_digits + '_a', exist_ok=True)
+os.makedirs(output_folder_digits + '_b', exist_ok=True)
+os.makedirs(output_folder_digits + '_d', exist_ok=True)
+output_folder_sign = output_folder + 'sign/'
+os.makedirs(output_folder_sign, exist_ok=True)
+
+total_number_of_noise_patches = 2
+max_number_of_pixels_in_noise_patches = 40 # 10 for 10 x 10 patches
+number_of_pixels_away_from_display = 50
+
+#initialize seed to facilitate reproducing bugs 
+random.seed(1342)
+
+#from defined resolutions
+top_left_x = int((num_pixels_base/2) - (num_pixels_digits/2))
+top_left_y = top_left_x #symmetry
+
+# See for the modeling of objects
+# https://docs.google.com/document/d/1b1R3ncgDhGfIEpoF7hteZg4nThMeSrUQM2pqORqP4Ww/edit?ts=5daa0d1e#
+num_objects = 36
+'''
+Objects:
+display  - class 0
+percent  - class 1
+sinal_apenas (-) - class 2 ou 10
+sinal_e_um (-1) - class 3 ou 11
+sinal_zero (0, tudo apagado) - class 4 ou 00
+sinal_mais (1) - class 5 ou 01
+sup_esq_0 - class 6 + digit
+sup_esq_1
+…
+sup_esq_9
+sup_dir_0 - class 16 + digit
+...
+sup_dir_9
+inf_dir_0 - class 26 + digit
+…
+inf_dir_9
+'''
+# there are num_objects but only 6 boxes. Two are always classes 0 and 1 while there are other 4 classes that change
+num_bounding_boxes = 6
+display_bounding_boxes = np.zeros(( num_bounding_boxes, 5), )
+
+object_class = 0 #there is only one class here
+
+#follow convention of augmentation API
+#box for display object
+display_bounding_boxes[0, 0] = top_left_x
+display_bounding_boxes[0, 1] = top_left_y
+display_bounding_boxes[0, 2] = top_left_x + num_pixels_digits
+display_bounding_boxes[0, 3] = top_left_y + num_pixels_digits
+display_bounding_boxes[0, 4] = 0 #class always 0
+
+'''
+Other boxes assuming 209 x 209 digit display images
+topleft x, y, rightbottom x, y. I got the numbers below manually
+a - 25 15 76 99
+b - 80 15 130 99
+c - 20 107 76 187
+d - 80 107 130 187
+e - 131 1 208 208
+'''
+if num_pixels_digits != 209:
+    raise Exception("Sorry. num_pixels_digits is currently limited to be equals to 209")
+display_bounding_boxes[1] = np.array([25+top_left_x, 15+top_left_y, 76+top_left_x, 99+top_left_y, -1]) #non-initialized class -1
+display_bounding_boxes[2] = np.array([80+top_left_x, 15+top_left_y, 130+top_left_x, 99+top_left_y, -1]) #non-initialized class -1
+display_bounding_boxes[3] = np.array([20+top_left_x, 107+top_left_y, 76+top_left_x, 187+top_left_y, -1]) #non-initialized class -1
+display_bounding_boxes[4] = np.array([80+top_left_x, 107+top_left_y, 130+top_left_x, 187+top_left_y, -1]) #non-initialized class -1
+display_bounding_boxes[5] = np.array([131+top_left_x, 1+top_left_y, 208+top_left_x, 208+top_left_y, 1]) #class always 1
+
+#print(display_bounding_boxes)
+#print(display_bounding_boxes.shape)
+
+#AK: keep the translation as the last one
+#transforms = Sequence([RandomScale((0.8,1.2), diff = True), RandomRotate(90), RandomHSV(hue = None, saturation = None, brightness = 1), RandomTranslate(0.1)])
+#first_transforms_set = Sequence([RandomScale((-0.7,-0.6)),RandomRotate(360)])
+#first_transforms_set = Sequence([RandomScale((-0.7,-0.6))])
+first_transforms_set = Sequence([RandomScale((-0.7,-0.6)),RandomRotate(360)])
+
+N = len(all_digit_files_list)
+num_of_written_images = 0
+num_of_skipped_images = 0
+for epoch in range(num_epochs): #a complete sweep over all digits
+    for n in range(N): #go over all files
+        file_name = all_digit_files_list[n]
+        output_file_name = output_folder + 'dig' + str(epoch) + '_' + os.path.basename(file_name)
+        #if os.path.basename(file_name) == '11009.png':
+        #if os.path.basename(file_name) == '11010.png':
+        #if os.path.basename(file_name) == '07119.png':            
+        #    print('jddj')
+        #    exit(1)
+
+        img_digit = cv2.imread(file_name)[:, :, ::-1] #OpenCV uses BGR channels
+
+        print('#', num_of_written_images, '/', (num_of_skipped_images+num_of_written_images), file_name)
+
+        if len(img_digit.shape) < 3:
+            raise Exception('I am assuming a color image with 3 channels')
+
+        five_classes = extract_classes_from_file_name(file_name) #each "class" is a digit in the file name, e.g. 00107 in dig0_00107.png
+
+        #print('five_classes',five_classes)
+
+        a_class = int(five_classes[0])
+        b_class = int(five_classes[1])
+        d_class = int(five_classes[4])
+        if five_classes[2]==1 and five_classes[3]==0:
+            c_class = 3 #sinal_apenas (-) - class 2 ou 10
+        elif five_classes[2]==1 and five_classes[3]==1:
+            c_class = 2 #sinal_e_um (-1) - class 3 ou 11
+        elif five_classes[2]==0 and five_classes[3]==0:
+            c_class = 0 #sinal_zero (0, tudo apagado) - class 4 ou 00
+        elif five_classes[2]==0 and five_classes[3]==1:
+            c_class = 1 #sinal_mais (1) - class 5 ou 01
+        else:
+            raise Exception('Error in parsing or file name:', file_name, '=>', five_classes)
+        c_class = int(c_class)
+
+        #need deep copy because augmentation API changes the arrays inside
+        target_bounding_boxes = deepcopy(display_bounding_boxes)
+        #will create large image and position the original target in its center
+        target_expanded = deepcopy(img_base_original) #not sure I need deep copy
+
+        pos = (top_left_x, top_left_y)
+        #superimpose:
+        overlay_image(target_expanded, img_digit, pos)
+
+        if False: #should_show_images:
+            plt.imshow(draw_rect(target_expanded, display_bounding_boxes))
+            plt.show()
+
+        #print('Bounding boxes before transformations=', target_bounding_boxes)
+
+        #implement several transformations here
+        final_image, final_bounding_boxes = first_transforms_set(target_expanded, target_bounding_boxes)
+        if len(final_bounding_boxes) == 0:
+            print('Skipping file', file_name, '. Invalid augmentation!')
+            num_of_skipped_images += 1
+            continue  #skip, invalid augmentation
+        #print('Bounding boxes after transformations=', final_bounding_boxes)
+
+        #extract final image by centering bounding box 
+        center_x = int((final_bounding_boxes[0][0] + final_bounding_boxes[0][2])/2)
+        center_y = int((final_bounding_boxes[0][1] + final_bounding_boxes[0][3])/2)            
+
+        should_disturb_box_center = True
+
+        if should_disturb_box_center:
+            center_x += random.randint(-random_center_shift, random_center_shift)
+            center_y += random.randint(-random_center_shift, random_center_shift)
+
+        #print(center_x, center_y, 'centers')
+
+        top_left_final_x = center_x- int( (num_pixels_final_x)/2 )
+        top_left_final_y = center_y- int( (num_pixels_final_y)/2 )
+        bottom_right_final_x = top_left_final_x + num_pixels_final_x
+        bottom_right_final_y = top_left_final_y + num_pixels_final_y
+
+        if False: #should_show_images:
+            #cv2.imshow("just here", draw_rect(final_image, final_bounding_boxes))
+            #cv2.waitKey(100)
+            plt.imshow(draw_rect(final_image, final_bounding_boxes))
+            plt.show()
+
+        #black_background = np.zeros(final_image.shape).astype(np.uint8)
+
+        final_image = final_image[top_left_final_y:bottom_right_final_y,top_left_final_x:bottom_right_final_x,:]
+
+        #need deep copy because augmentation API changes the arrays inside
+        #target_bounding_boxes = deepcopy(display_bounding_boxes)
+        #will create large image and position the original target in its center
+        
+        #pos = (top_left_x, top_left_y)
+        #superimpose:
+        #overlay_image(black_background, final_image, pos)
+        #if True: #should_show_images:
+        #    plt.imshow(black_background)
+        #    #plt.imshow(draw_rect(final_image, final_bounding_boxes))
+        #    plt.show()
+
+        if np.prod(final_image.shape) != (num_pixels_final_x*num_pixels_final_y*3):
+        #if np.prod(final_image.shape) != (num_pixels_final_x*num_pixels_final_y*1): #use 1 because image is B&W now
+            #the transformation generated an image smaller than expected
+            print('Skipping file', file_name, '. Invalid augmentation!')
+            num_of_skipped_images += 1
+            continue  #skip, invalid augmentation
+
+        final_image = binarize_image(final_image)
+
+        #add noise
+        if should_add_noise:
+            center_x = int (final_image.shape[0]/2)
+            center_y = int (final_image.shape[1]/2)
+            for ii in range(total_number_of_noise_patches):
+                noise_probability = np.random.uniform(low=0.1, high=1.0, size=1)
+                patch_size = np.random.randint(2, max_number_of_pixels_in_noise_patches+1)
+                mask = np.random.uniform(low=0.0, high=1.0, size=(patch_size,patch_size)) < noise_probability
+                mask = 255 * mask #AK-TODO the images should be 0 or 1, instead of 0 or 255
+                patch = mask.astype(np.uint8)
+                if np.random.uniform(low=0.0, high=1.0, size=1) > 0.5:
+                    pos_noise_x = center_x + random.randint(number_of_pixels_away_from_display, final_image.shape[0] - center_x)
+                else:
+                    pos_noise_x = random.randint(0, center_x - number_of_pixels_away_from_display)
+                if np.random.uniform(low=0.0, high=1.0, size=1) > 0.5:
+                    pos_noise_y = center_y + random.randint(number_of_pixels_away_from_display, final_image.shape[1] - center_y)
+                else:
+                    pos_noise_y = random.randint(0, center_y - number_of_pixels_away_from_display)
+                #print((pos_noise_x, pos_noise_y))
+                #print(patch)
+                #print(np.max(final_image))
+                overlay_1_channel_image(final_image, patch, (pos_noise_x, pos_noise_y))
+
+
+        #mimic the automatic processing to extract digits
+        final_image = cv2.cvtColor(final_image, cv2.COLOR_GRAY2BGR)
+        cropped_binary_image, cropped_image = step_all_from_camera_to_rotated_display(final_image, percent_template)
+        all_images = extract_digits_from_display(cropped_binary_image,num_pixels_output_image,num_pixels_each_digit)
+        
+        if show_plots_to_debug:
+            #show how we extracted the digits
+            plot_digit_images(all_images)
+
+        #returns 5 images in a list: resized one and digits
+        # Sequence is resized one, a, b, c, d
+        #save digit in part a of display
+        output_file_name = output_folder_digits + '_a/' + str(a_class) + '_' + str(num_of_written_images) + '.png'
+        cv2.imwrite(output_file_name, all_images[1])
+        print('Wrote', output_file_name)
+        num_of_written_images += 1
+
+        #save digit in part b of display
+        output_file_name = output_folder_digits + '_b/' + str(b_class) + '_' + str(num_of_written_images) + '.png'
+        cv2.imwrite(output_file_name, all_images[2])
+        print('Wrote', output_file_name)
+        num_of_written_images += 1
+
+        #save sign (-1, 0,...) in part c of display
+        output_file_name = output_folder_sign + str(c_class) + '_' + str(num_of_written_images) + '.png'
+        cv2.imwrite(output_file_name, all_images[3])
+        print('Wrote', output_file_name)
+        num_of_written_images += 1
+
+        #save digit in part d of display
+        output_file_name = output_folder_digits + '_d/' + str(d_class) + '_' + str(num_of_written_images) + '.png'
+        cv2.imwrite(output_file_name, all_images[4])
+        print('Wrote', output_file_name)
+        num_of_written_images += 1
+        
+        if should_show_images:
+            #cv2.imshow("Final image", draw_rect(final_image, final_bounding_boxes))
+            cv2.imshow("Final image", final_image)
+            cv2.waitKey(100)
+            #plt.imshow(draw_rect(final_image, final_bounding_boxes))
+            #plt.draw()
+            #plt.pause(0.05)
+
+print("Finished processing.", num_of_written_images, "files were generated and ", num_of_skipped_images, 'were skipped')
+if should_show_images:
+    plt.show()
