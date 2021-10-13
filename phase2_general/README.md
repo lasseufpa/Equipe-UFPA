@@ -33,5 +33,5 @@ $ source devel/setup.bash
 To run phase 2 use the following command.
 
 ```bash
-$ rosrun phase2_general phase2_script.py
+$ rosrun phase2_general phase2_main.py
 ```
