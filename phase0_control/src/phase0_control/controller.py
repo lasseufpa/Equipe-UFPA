@@ -4,7 +4,7 @@ from mrs_msgs.msg import PositionCommand, ReferenceStamped
 from mrs_msgs.srv import ReferenceStampedSrv
 from nav_msgs.msg import Odometry
 
-from collector import Collector
+from .collector import Collector
 
 class ControllerUtils(Collector):
     def __init__(self, odom_topic = '/uav1/odometry/odom_main'):
