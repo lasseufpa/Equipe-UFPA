@@ -36,7 +36,7 @@ class Net(nn.Module):
         x = F.relu(self.fc1(x))
         x = F.dropout(x, training=self.training)
         x = self.fc2(x)
-        return F.log_softmax(x)
+        return F.log_softmax(x, dim = 1)
 
 
 def digit_classifier(image):
@@ -57,20 +57,20 @@ def digit_classifier(image):
 
     # READ CLASSIFIERS
     classifier_digit_a = Net()
-    classifier_digit_a.load_state_dict(torch.load('./classifiers/classifier_digits_a.pth'))
+    classifier_digit_a.load_state_dict(torch.load('/home/gundabad/workspace/src/phase3_general/src/phase_3_display_classification/classifiers/classifier_digits_a.pth'))
     classifier_digit_a.eval()
 
     classifier_digit_b = Net()
-    classifier_digit_b.load_state_dict(torch.load('./phase_3_display_classification/classifiers/classifier_digits_b.pth'))
+    classifier_digit_b.load_state_dict(torch.load('/home/gundabad/workspace/src/phase3_general/src/phase_3_display_classification/classifiers/classifier_digits_b.pth'))
     classifier_digit_b.eval()
 
 
     classifier_digit_sign = Net()
-    classifier_digit_sign.load_state_dict(torch.load('./classifiers/classifier_digits_sign.pth'))
+    classifier_digit_sign.load_state_dict(torch.load('/home/gundabad/workspace/src/phase3_general/src/phase_3_display_classification/classifiers/classifier_digits_sign.pth'))
     classifier_digit_sign.eval()
 
     classifier_digit_d = Net()
-    classifier_digit_d.load_state_dict(torch.load('./classifiers/classifier_digits_d.pth'))
+    classifier_digit_d.load_state_dict(torch.load('/home/gundabad/workspace/src/phase3_general/src/phase_3_display_classification/classifiers/classifier_digits_d.pth'))
     classifier_digit_d.eval()
 
 
@@ -139,7 +139,7 @@ def mnist_classifier(final_image):
 
     #From AK Script
     #template_file = './rotate_display/template_1.png' #template_1.png is the largest
-    template_file = './rotate_display/template_1.png' #template_1.png is the largest
+    template_file = '/home/gundabad/workspace/src/phase3_general/src/phase_3_display_classification/rotate_display/template_1.png' #template_1.png is the largest
     percent_template = cv2.imread(template_file,0) #keep it in memory to speedup
     #These are the important digits for training the MNIST DNNs
     num_pixels_output_image = 290 #this image will not be used, has all display

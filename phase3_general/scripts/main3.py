@@ -61,7 +61,7 @@ def main():
     rospy.init_node('ufpa_phase3_main')
 
     #data = [[-19.5, -21, 2], [30.4897, -22.328, 2], [36.67, -14.36, 2], [38, -22.52, 2], [45, 10, 2]]
-    data = [[-30, 30, 2], [60, 0, 2], [30, -55, 2]]
+    data = [[-30, 30, 2], [64, 0, 2], [30, -60, 2]]
 
     rospy.set_param('/bases', data)
 
@@ -78,13 +78,13 @@ def main():
     image = GetImage()
 
     
-    #change_alt_sensor('BARO')
+    print(change_alt_sensor('HEIGHT'))
     
 
     #desired_height = [2, 2, 1.3, 0.9, 0.9]
     desired_height = [6, 6, 6, 6, 6, 6]
     number_of_displays = 0
-    '''for _i, base in enumerate(bases):
+    for _i, base in enumerate(bases):
 
         if number_of_displays == 1:
             break
@@ -102,7 +102,7 @@ def main():
         rospy.sleep(1)
         switch_controller('MpcController')
         rospy.sleep(1)
-        control.change_reference_pos(is_abs=True, z=1.2, arrive=True)
+        control.change_reference_pos(is_abs=True, z=-2.2, arrive=True)
 
         #if not control.center_at_base(centralize, descend_factor=-0.01):
             #continue
@@ -119,42 +119,26 @@ def main():
         if any_display:
             rospy.loginfo('DISPLAY DETECTADO')
 
-            number_of_displays += 1
-            rospy.sleep(0.1)
-        
-            upper_number, down_number = recognizeDigits(image, control)
-
-            resposta = isConforme(upper_number, down_number)
-
-            for _ in range(10):
-                rospy.loginfo('Percentual de gas: %s', resposta[0])
-                rospy.loginfo('Ajuste de ZERO: %s', resposta[1])
-                rospy.sleep(1)
-
         else:
             rospy.loginfo('DISPLAY NAO DETECTADO')
         switch_controller('Se3Controller')
-        rospy.sleep(1)'''
+        rospy.sleep(2)
 
-    garmin.call(False)
-    #change_speed('fast')
+    change_speed('fast')
     rospy.sleep(1)
-    
     #offshore 1
-    control.change_reference_pos(is_abs=True, x=-19, y=-21, z=13.6)
-    while(control.utils_arrived.arrived([-19, -21, 13.6]) == False):
+    control.change_reference_pos(is_abs=True, x=-19, y=-21, z=7)
+    while(control.utils_arrived.arrived([-19, -21, 7]) == False):
         rospy.sleep(0.2)
     
-    
-    #change_speed('medium')
-    #garmin.call(True)
-    #change_alt_sensor('HEIGHT')
-    #switch_controller('MpcController')
-    #rospy.sleep(2)
+    change_speed('medium')
+    garmin.call(True)
+    switch_controller('MpcController')
+    rospy.sleep(2)
     
     #altitude adjustment
-    control.change_reference_pos(is_abs=True, x=-19, y=-21, z=0.45)
-    while(control.utils_arrived.arrived([-19, -21, 0.45]) == False):
+    control.change_reference_pos(is_abs=True, x=-19, y=-21, z=2.2)
+    while(control.utils_arrived.arrived([-19, -21, 2.2]) == False):
         rospy.sleep(0.2)
     
     img = binarize_image(image.get())
@@ -164,32 +148,20 @@ def main():
     if any_display:
         rospy.loginfo('DISPLAY DETECTADO')
 
-        number_of_displays += 1
-        rospy.sleep(0.1)
-    
-        upper_number, down_number = recognizeDigits(image, control)
-
-        resposta = isConforme(upper_number, down_number)
-
-        for _ in range(10):
-            rospy.loginfo('Percentual de gas: %s', resposta[0])
-            rospy.loginfo('Ajuste de ZERO: %s', resposta[1])
-            rospy.sleep(1)
-
     else:
         rospy.loginfo('DISPLAY NAO DETECTADO')
-    #switch_controller('Se3Controller')
-    #rospy.sleep(1)
+    switch_controller('Se3Controller')
+    rospy.sleep(2)
 
-    #garmin.call(False)
-    #rospy.sleep(5)
-    #change_speed('fast')
+    garmin.call(False)
+    rospy.sleep(5)
+    change_speed('fast')
     #change_alt_sensor('BARO')
-    #rospy.sleep(2)
+    rospy.sleep(2)
 
     # Fora area colisao
-    control.change_reference_pos(is_abs=True, x=-19, y=-10, z=2.6)
-    while(control.utils_arrived.arrived([-19, -10, 2.6]) == False):
+    control.change_reference_pos(is_abs=True, x=-19, y=-10, z=7)
+    while(control.utils_arrived.arrived([-19, -10, 7]) == False):
         rospy.sleep(0.2)
 
     # Fora area colisao
@@ -198,21 +170,21 @@ def main():
     #    rospy.sleep(0.2)
 
     #base cano
-    control.change_reference_pos(is_abs=True, x=-54, y=-35, z=9.85)
-    while(control.utils_arrived.arrived([-54, -35, 9.85]) == False):
+    control.change_reference_pos(is_abs=True, x=-54, y=-35, z=12)
+    while(control.utils_arrived.arrived([-54, -35, 12]) == False):
         rospy.sleep(0.2)
 
     #garmin.call(True)
     
-    #change_speed('medium')
-    #rospy.sleep(1)
+    change_speed('medium')
+    rospy.sleep(1)
     #change_alt_sensor('HEIGHT')
-    #switch_controller('MpcController')
-    #rospy.sleep(2)
+    switch_controller('MpcController')
+    rospy.sleep(2)
 
     #altitude adjustment
-    control.change_reference_pos(is_abs=True, x=-54, y=-35, z=-1)
-    while(control.utils_arrived.arrived([-54, -35, -1]) == False):
+    control.change_reference_pos(is_abs=True, x=-54, y=-35, z=2.2)
+    while(control.utils_arrived.arrived([-54, -35, 2.2]) == False):
         rospy.sleep(0.2)
 
     img = binarize_image(image.get())
@@ -221,52 +193,39 @@ def main():
     print(any_display)
     if any_display:
         rospy.loginfo('DISPLAY DETECTADO')
-
-        number_of_displays += 1
-        rospy.sleep(0.1)
-    
-        upper_number, down_number = recognizeDigits(image, control)
-
-        resposta = isConforme(upper_number, down_number)
-
-        for _ in range(10):
-            rospy.loginfo('Percentual de gas: %s', resposta[0])
-            rospy.loginfo('Ajuste de ZERO: %s', resposta[1])
-            rospy.sleep(1)
-
     else:
         rospy.loginfo('DISPLAY NAO DETECTADO')
-    #switch_controller('Se3Controller')
-    #rospy.sleep(1)
+    switch_controller('Se3Controller')
+    rospy.sleep(2)
 
     #garmin.call(False)
     #rospy.sleep(5)
     #change_alt_sensor('BARO')
-    #change_speed('fast')
-    #rospy.sleep(2)
+    change_speed('medium')
+    rospy.sleep(2)
 
     ## GO BACK HOME
 
     # Fly at high Z
     #coster base
-    control.change_reference_pos(is_abs=True, x=-50, y=-24, z=4)
-    while(control.utils_arrived.arrived([50, -24, 4]) == False):
+    control.change_reference_pos(is_abs=True, x=-50, y=-24, z=7)
+    while(control.utils_arrived.arrived([-50, -24, 7]) == False):
         rospy.sleep(0.2)
 
     #garmin.call(True)
     
-    #change_speed('medium')
-    #rospy.sleep(1)
+    change_speed('fast')
+    rospy.sleep(1)
     #switch_controller('MpcController')
     #rospy.sleep(1)
 
     #altitude adjustment
-    control.change_reference_pos(is_abs=True, x=10.5, y=90, z=1)
-    while(control.utils_arrived.arrived([10.5, 90, 1]) == False):
+    control.change_reference_pos(is_abs=True, x=10.5, y=90, z=7)
+    while(control.utils_arrived.arrived([10.5, 90, 7]) == False):
         rospy.sleep(0.2)
     
-    control.change_reference_pos(is_abs=True, x=10.5, y=90, z=0.5)
-    while(control.utils_arrived.arrived([10.5, 90, 0.5]) == False):
+    control.change_reference_pos(is_abs=True, x=10.5, y=90, z=1)
+    while(control.utils_arrived.arrived([10.5, 90, 1]) == False):
         rospy.sleep(0.2)
 
     rospy.loginfo('LANDING...')

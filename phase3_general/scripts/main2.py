@@ -58,7 +58,7 @@ def isConforme(upper_number, down_number):
 
 def main():
 
-    rospy.init_node('ufpa_phase3_main')
+    rospy.init_node('ufpa_phase3_main2')
 
     #data = [[-19.5, -21, 2], [30.4897, -22.328, 2], [36.67, -14.36, 2], [38, -22.52, 2], [45, 10, 2]]
     data = [[-30, 30, 2], [60, 0, 2], [30, -55, 2]]
@@ -164,22 +164,10 @@ def main():
     if any_display:
         rospy.loginfo('DISPLAY DETECTADO')
 
-        number_of_displays += 1
-        rospy.sleep(0.1)
-    
-        upper_number, down_number = recognizeDigits(image, control)
-
-        resposta = isConforme(upper_number, down_number)
-
-        for _ in range(10):
-            rospy.loginfo('Percentual de gas: %s', resposta[0])
-            rospy.loginfo('Ajuste de ZERO: %s', resposta[1])
-            rospy.sleep(1)
-
     else:
         rospy.loginfo('DISPLAY NAO DETECTADO')
     #switch_controller('Se3Controller')
-    #rospy.sleep(1)
+    rospy.sleep(2)
 
     #garmin.call(False)
     #rospy.sleep(5)
@@ -221,23 +209,10 @@ def main():
     print(any_display)
     if any_display:
         rospy.loginfo('DISPLAY DETECTADO')
-
-        number_of_displays += 1
-        rospy.sleep(0.1)
-    
-        upper_number, down_number = recognizeDigits(image, control)
-
-        resposta = isConforme(upper_number, down_number)
-
-        for _ in range(10):
-            rospy.loginfo('Percentual de gas: %s', resposta[0])
-            rospy.loginfo('Ajuste de ZERO: %s', resposta[1])
-            rospy.sleep(1)
-
     else:
         rospy.loginfo('DISPLAY NAO DETECTADO')
     #switch_controller('Se3Controller')
-    #rospy.sleep(1)
+    rospy.sleep(2)
 
     #garmin.call(False)
     #rospy.sleep(5)
@@ -250,7 +225,7 @@ def main():
     # Fly at high Z
     #coster base
     control.change_reference_pos(is_abs=True, x=-50, y=-24, z=4)
-    while(control.utils_arrived.arrived([50, -24, 4]) == False):
+    while(control.utils_arrived.arrived([-50, -24, 4]) == False):
         rospy.sleep(0.2)
 
     #garmin.call(True)

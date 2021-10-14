@@ -16,7 +16,7 @@ def binarize_image(image):
     # graycale, blurring it, and computing an edge map
     HSV = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    low_white_display = (0, 0, 131)
+    low_white_display = (0, 0, 121)
     high_white_display = (0, 0, 255)
 
     # threshold the warped image, then apply a series of morphological
